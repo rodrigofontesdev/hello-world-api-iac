@@ -41,3 +41,29 @@ resource "aws_iam_role" "ecr-role" {
     IAC = "True"
   }
 }
+
+resource "aws_iam_role_policy" "ecr-policy" {
+  name = "ecr-app-permission"
+  role = aws_iam_role.ecr-role.id
+
+  policy = jsonencode({
+    "Version" = "2012-10-17"
+    "Statement" = [
+      {
+        "Sid" = "Statement1"
+        "Action" = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:PutImage",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetAuthorizationToken",
+        ]
+        "Effect"   = "Allow"
+        "Resource" = "*"
+      }
+    ]
+  })
+}
