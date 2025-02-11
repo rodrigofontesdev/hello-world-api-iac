@@ -46,25 +46,26 @@ resource "aws_iam_role" "app-runner-role" {
   name = "app-runner-role"
 
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "build.apprunner.amazonaws.com"
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "build.apprunner.amazonaws.com"
         },
-        "Action": "sts:AssumeRole"
+        "Action" : "sts:AssumeRole"
       }
     ]
   })
 
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-  ]
-
   tags = {
     IAC = "True"
   }
+}
+
+resource "aws_iam_role_policy_attachment" "app-runner-policy-attachment" {
+  role       = aws_iam_role.app-runner-role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
 resource "aws_iam_role_policy" "ecr-policy" {
@@ -75,7 +76,22 @@ resource "aws_iam_role_policy" "ecr-policy" {
     "Version" = "2012-10-17"
     "Statement" = [
       {
+        "Sid"      = "Statement0"
+        "Action"   = "apprunner:*"
+        "Effect"   = "Allow"
+        "Resource" = "*"
+      },
+      {
         "Sid" = "Statement1"
+        "Action" = [
+          "iam:PassRole",
+          "iam:CreateServiceLinkedRole"
+        ]
+        "Effect"   = "Allow"
+        "Resource" = "*"
+      },
+      {
+        "Sid" = "Statement2"
         "Action" = [
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
