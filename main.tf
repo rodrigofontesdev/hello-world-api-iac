@@ -5,6 +5,13 @@ terraform {
       version = "5.86.0"
     }
   }
+
+  backend "s3" {
+    bucket  = "hello-world-api-iac"
+    key     = "state/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+  }
 }
 
 provider "aws" {

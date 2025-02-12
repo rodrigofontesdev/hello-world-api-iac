@@ -61,6 +61,12 @@ resource "aws_iam_role_policy" "tf-policy" {
         "Effect"   = "Allow"
         "Resource" = "*"
       },
+      {
+        "Sid"      = "Statement2"
+        "Action"   = "s3:*"
+        "Effect"   = "Allow"
+        "Resource" = "*"
+      }
     ]
   })
 }
