@@ -44,3 +44,4 @@ jobs:
         run: terraform apply -auto-approve
         env:
           TF_VAR_region: ${{ secrets.AWS_REGION }}
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
