@@ -37,12 +37,6 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan
-        env:
-          TF_PROFILE: 'rodrigofontesdev'
-          TF_REGION: 'us-east-1'
 
       - name: Terraform apply
         run: terraform apply -auto-approve
-        env:
-          TF_PROFILE: 'rodrigofontesdev'
-          TF_REGION: 'us-east-1'
